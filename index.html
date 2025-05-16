@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deployment Context Box</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .context-box {
+      background: #fff;
+      border: 2px solid #0078d7;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: left;
+    }
+    .context-box h1 {
+      margin-top: 0;
+      color: #0078d7;
+      text-align: center;
+    }
+    .context-box p {
+      color: #333;
+      font-size: 1.1em;
+      margin: 5px 0;
+    }
+    .context-box .label {
+      font-weight: bold;
+      color: #555;
+      display: inline-block;
+      width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <div class="context-box">
+    <h1>Deployment Status</h1>
+    <p><span class="label">Version:</span> v1.4.2</p>
+    <p><span class="label">Environment:</span> Production</p>
+    <p><span class="label">Deployed By:</span> admin_user</p>
+    <p><span class="label">Date:</span> 2025-05-16 14:30 UTC</p>
+    <p><span class="label">Status:</span> <span style="color:green;">Success</span></p>
+  </div>
+</body>
+</html>
+
