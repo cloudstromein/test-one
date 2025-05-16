@@ -1,84 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deployment Context Box</title>
+  <meta charset="UTF-8">
+  <title>Falling Balls Game</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 0;
       margin: 0;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .context-box {
-      background: #fff;
-      border: 2px solid #0078d7;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 20px 30px;
-      max-width: 400px;
-      width: 100%;
-      text-align: left;
-    }
-    .context-box h1 {
-      margin-top: 0;
-      color: #0078d7;
+      overflow: hidden;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
       text-align: center;
     }
-    .context-box p {
-      color: #333;
-      font-size: 1.1em;
-      margin: 5px 0;
+
+    #gameCanvas {
+      background: #222;
+      display: block;
+      margin: 0 auto;
+      border: 2px solid #444;
     }
-    .context-box .label {
-      font-weight: bold;
-      color: #555;
-      display: inline-block;
-      width: 120px;
+
+    #score {
+      font-size: 20px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Previous Deployment -->
-    <div class="context-box">
-      <h1>Deployment Completed</h1>
-      <p><span class="label">Version:</span> v1.4.2</p>
-      <p><span class="label">Environment:</span> Production</p>
-      <p><span class="label">Deployed By:</span> admin_user</p>
-      <p><span class="label">Date:</span> 2025-05-16 14:30 UTC</p>
-      <p><span class="label">Status:</span> <span style="color:gray;">Completed</span></p>
-    </div>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <div id="score">Score: 0</div>
 
-    <!-- Next Deployment -->
-    <div class="context-box">
-      <h1>Next Deployment</h1>
-      <p><span class="label">Version:</span> v1.4.3</p>
-      <p><span class="label">Environment:</span> Staging</p>
-      <p><span class="label">Planned By:</span> deploy_bot</p>
-      <p><span class="label">Scheduled:</span> 2025-05-20 09:00 UTC</p>
-      <p><span class="label">Status:</span> <span style="color:orange;">Scheduled</span></p>
-    </div>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-    <!-- New Deployment -->
-    <div class="context-box">
-      <h1>Upcoming Deployment</h1>
-      <p><span class="label">Version:</span> v3.0.0</p>
-      <p><span class="label">Environment:</span> QA</p>
-      <p><span class="label">Planned By:</span> qa_lead</p>
-      <p><span class="label">Scheduled:</span> 2025-05-25 16:00 UTC</p>
-      <p><span class="label">Status:</span> <span style="color:blue;">Planned</span></p>
-    </div>
-  </div>
+    const paddle = {
+      x: 160,
+      y: 570,
+      width: 80,
+      height: 15,
+      speed: 6,
+    };
+
+    let score = 0;
+    const balls = [];
+
+    function createBall() {
+      balls.push({
+        x: Math.random() * (canvas.width - 20),
+        y: -20,
+        radius: 10,
+        speed: 2 + Math.random() * 2,
+      });
+    }
+
+    function drawPaddle() {
+      ctx.fillStyle = '#0f0';
+      ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+    }
+
+    function drawBall(ball) {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#f00';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function updateBalls() {
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        b.y += b.speed;
+
+        // Catching logic
+        if (
+          b.y + b.radius >= paddle.y &&
+          b.x > paddle.x &&
+          b.x < paddle.x + paddle.width
+        ) {
+          balls.splice(i, 1);
+          score++;
+          document.getElementById('score').textContent = "Score: " + score;
+          i--;
+        } else if (b.y - b.radius > canvas.height) {
+          balls.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPaddle();
+      balls.forEach(drawBall);
+    }
+
+    function gameLoop() {
+      updateBalls();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Paddle Movement
+    const keys = {};
+    document.addEventListener('keydown', (e) => {
+      keys[e.key] = true;
+    });
+    document.addEventListener('keyup', (e) => {
+      keys[e.key] = false;
+    });
+
+    function movePaddle() {
+      if (keys['ArrowLeft'] || keys['a']) {
+        paddle.x -= paddle.speed;
+      }
+      if (keys['ArrowRight'] || keys['d']) {
+        paddle.x += paddle.speed;
+      }
+      // Clamp within canvas
+      paddle.x = Math.max(0, Math.min(canvas.width - paddle.width, paddle.x));
+    }
+
+    // Spawn new balls every second
+    setInterval(createBall, 1000);
+
+    function mainLoop() {
+      movePaddle();
+      gameLoop();
+    }
+
+    requestAnimationFrame(mainLoop);
+    setInterval(() => {
+      requestAnimationFrame(mainLoop);
+    }, 1000 / 60); // 60 FPS
+  </script>
 </body>
 </html>
 
