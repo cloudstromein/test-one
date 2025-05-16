@@ -10,8 +10,8 @@
       background: #f0f2f5;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      padding: 40px 0;
       margin: 0;
     }
     .container {
@@ -49,14 +49,14 @@
 </head>
 <body>
   <div class="container">
-    <!-- Current Deployment -->
+    <!-- Previous Deployment -->
     <div class="context-box">
-      <h1>Deployment Status</h1>
+      <h1>Deployment Completed</h1>
       <p><span class="label">Version:</span> v1.4.2</p>
       <p><span class="label">Environment:</span> Production</p>
       <p><span class="label">Deployed By:</span> admin_user</p>
       <p><span class="label">Date:</span> 2025-05-16 14:30 UTC</p>
-      <p><span class="label">Status:</span> <span style="color:green;">Success</span></p>
+      <p><span class="label">Status:</span> <span style="color:gray;">Completed</span></p>
     </div>
 
     <!-- Next Deployment -->
@@ -67,6 +67,16 @@
       <p><span class="label">Planned By:</span> deploy_bot</p>
       <p><span class="label">Scheduled:</span> 2025-05-20 09:00 UTC</p>
       <p><span class="label">Status:</span> <span style="color:orange;">Scheduled</span></p>
+    </div>
+
+    <!-- New Deployment -->
+    <div class="context-box">
+      <h1>Upcoming Deployment</h1>
+      <p><span class="label">Version:</span> v3.0.0</p>
+      <p><span class="label">Environment:</span> QA</p>
+      <p><span class="label">Planned By:</span> qa_lead</p>
+      <p><span class="label">Scheduled:</span> 2025-05-25 16:00 UTC</p>
+      <p><span class="label">Status:</span> <span style="color:blue;">Planned</span></p>
     </div>
   </div>
 </body>
