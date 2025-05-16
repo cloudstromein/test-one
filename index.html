@@ -14,6 +14,11 @@
       height: 100vh;
       margin: 0;
     }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
     .context-box {
       background: #fff;
       border: 2px solid #0078d7;
@@ -43,13 +48,26 @@
   </style>
 </head>
 <body>
-  <div class="context-box">
-    <h1>Deployment Status</h1>
-    <p><span class="label">Version:</span> v1.4.2</p>
-    <p><span class="label">Environment:</span> Production</p>
-    <p><span class="label">Deployed By:</span> admin_user</p>
-    <p><span class="label">Date:</span> 2025-05-16 14:30 UTC</p>
-    <p><span class="label">Status:</span> <span style="color:green;">Success</span></p>
+  <div class="container">
+    <!-- Current Deployment -->
+    <div class="context-box">
+      <h1>Deployment Status</h1>
+      <p><span class="label">Version:</span> v1.4.2</p>
+      <p><span class="label">Environment:</span> Production</p>
+      <p><span class="label">Deployed By:</span> admin_user</p>
+      <p><span class="label">Date:</span> 2025-05-16 14:30 UTC</p>
+      <p><span class="label">Status:</span> <span style="color:green;">Success</span></p>
+    </div>
+
+    <!-- Next Deployment -->
+    <div class="context-box">
+      <h1>Next Deployment</h1>
+      <p><span class="label">Version:</span> v1.4.3</p>
+      <p><span class="label">Environment:</span> Staging</p>
+      <p><span class="label">Planned By:</span> deploy_bot</p>
+      <p><span class="label">Scheduled:</span> 2025-05-20 09:00 UTC</p>
+      <p><span class="label">Status:</span> <span style="color:orange;">Scheduled</span></p>
+    </div>
   </div>
 </body>
 </html>
